@@ -1,0 +1,2 @@
+# keep everything byte-exact (scientific data: openmx.Band, POSCAR, npz)
+* -text
