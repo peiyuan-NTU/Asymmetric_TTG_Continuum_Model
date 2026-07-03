@@ -1,0 +1,6 @@
+TTG_3_45  rigid  dim=486642 (37434 atoms)  Ef=-3.6791995609675365 eV
+band: 50 eigenvalues nearest Ef, k-path Gamma-M-K-Gamma (150 k)
+solver: pardiso_lanczos.py (CPU MKL-PARDISO mtype=-4, exact fp64)  ~50h
+computed: 2026-07-02..03 on rack (64-thread host RAM)
+files: openmx.Band (Hartree), band.png (scatter, 90% ylim)
+note: first giant ever banded; source predicted h5 not in this dir (rebuild from DeepH if needed)

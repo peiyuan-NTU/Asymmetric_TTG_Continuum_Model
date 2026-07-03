@@ -1,0 +1,7 @@
+TTG_4_45  rigid  dim=478686 (36822 atoms)  Ef=-3.6791995609675365 eV
+band: 50 eigenvalues nearest Ef, k-path Gamma-M-K-Gamma (150 k)
+solver: gpu_lanczos_v9.py --stream --hybrid 112 (fp64 exact; ~5GB factor spilled to host)
+        github.com/peiyuan-NTU/GPU_Lanczos ; ~51.7 s/k ; ~2.2 h total on 1x H200 (ntugpu)
+computed: 2026-07-03 ; validated vs v9-fp64 to 1e-6 meV
+source: predicted/{hamiltonians_pred.h5,overlaps.h5} present in this structure dir
+files: openmx.Band (Hartree), band.png (scatter, 90% ylim)

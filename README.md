@@ -88,6 +88,34 @@ repo-relative. Requires numpy, scipy, matplotlib.
 tests. V₂ is transferable: −49 ± 7 meV across configs vs −59 ± 2 meV measured
 in the LCAO Hamiltonian. (β, λ) share a soft degeneracy — quote the pair.)
 
+## Zero-shot predictions (blind test, 2026-07-04)
+
+Three configs computed *after* the model was frozen (`scripts/predict.py`,
+frozen family-median parameters, only the energy offset optimized). TTG_3_45
+and TTG_4_45 are new twist angles AND a new folding class (m ≡ 1 mod 3: cones
+at K, K′, K — no Γ cones; the two outer-layer cones fold to the same K point
+and split by an L2-mediated effective coupling, a ~20 meV gap):
+
+| config | θ₁₂/θ₂₃ | folding | tier A (plain BM) | tier B (full) | TB K-gap → A / B |
+|---|---|---|---|---|---|
+| TTG_14_43 | 1.52°/2.28° | Γ class | 2.02 | **0.67** | gapless ✓ / ✓ |
+| TTG_4_45 | 4.03°/7.34° | K/K′ class | **2.02** | 3.40 | 23.5 → 24.6 ✓ / 0.4 ✗ |
+| TTG_3_45 | 5.08°/9.43° | K/K′ class | 4.31 | **2.21** | 20.0 → 36.7 / 11.7 |
+
+Take-aways: (i) zero-shot accuracy 0.7–4.3 meV across 1.5°–9.4° and across
+folding classes — plain BM even nails the 23.5 meV K-gap of 4_45 blind;
+(ii) the universal (V₂, β, λ) values calibrated on the Γ-class fine structure
+do NOT transfer reliably to the K/K′-class gap (tier B collapses it at 7.3°,
+halves it at 9.4°) — the new folding class breaks the (β, λ) soft degeneracy
+and provides the orthogonal constraint needed to pin them individually
+(joint refit = natural next step); (iii) both tiers independently find a
+CNP-vs-dataset-E_F offset of ≈ −28 meV for the x_45 family (real feature of
+the TB data, not a model artifact); (iv) TTG_14_43's re-run with the new GPU
+Lanczos v9 solver reproduces the old pipeline eigenvalue-for-eigenvalue
+(< 0.1 µeV), and the model predicts it at 0.67 meV with frozen parameters —
+better than its own per-config fit, i.e. nothing was lost by universalizing
+the parameters in the small-angle family.
+
 ## Relation to earlier work
 
 Supersedes the `Asymmetric_GPU_Continuum_Model` snapshot (old `ttlg_continuum`
