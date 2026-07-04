@@ -99,6 +99,11 @@ def main():
                                    win_clip(E_cont_a, lo, hi)),
             off_cont_meV=off_c * 1e3, off_ml_meV=off_m * 1e3)
 
+        np.savez(ROOT / "results" / f"dft3way_{tag}.npz",
+                 kfrac=kf, E_dft=np.array(E_dft, dtype=object),
+                 E_ml=np.array(E_ml_a, dtype=object),
+                 E_cont=np.array(E_cont_a, dtype=object),
+                 off_cont=off_c, off_ml=off_m, allow_pickle=True)
         kc = np.arange(len(kf))
         for ik in range(len(kf)):
             ax.plot([ik] * len(E_dft[ik]), E_dft[ik], "_", c="k", ms=6, mew=1.6,
