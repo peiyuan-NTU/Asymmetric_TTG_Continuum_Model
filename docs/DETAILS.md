@@ -1,7 +1,7 @@
 # Exactly-commensurate continuum model for the rigid TTG dataset
 
 Target data: `rack:~/ttg_organized/TTG_<i>_<j>/band/openmx.Band` — bands of the
-DeepH-predicted TB Hamiltonian for **rigid** (unrelaxed) asymmetric-TTG
+ML-predicted TB Hamiltonian for **rigid** (unrelaxed) asymmetric-TTG
 supercells built by `moire_structure/supercell/graphene/asy_ttg_poscar_gen.py`.
 DFT cross-checks exist for TTG_2_7 and TTG_2_12.
 
@@ -132,7 +132,7 @@ The mechanisms, each pinned by an independent fact:
   not in the difference set of the two layers' reciprocal lattices, so the
   coupling is exactly zero (model quartet degenerate to 0.9 meV). Fitted
   **V₂ = −49 ± 7 meV across all clean configs**, consistent with the pz
-  on-site measured directly in the DeepH LCAO Hamiltonian (middle − outer =
+  on-site measured directly in the ML LCAO Hamiltonian (middle − outer =
   −59 ± 2 meV, rack:/tmp/pz_onsite.py; outer−outer asymmetry only 1–3 meV).
   An earlier "effective V₂ ≈ −10 meV" conclusion was an artifact of fitting
   V₂ without the λ operator: Chamfer then compromises at V₂ ≈ −20 with half
@@ -154,7 +154,7 @@ quote the pair, do not interpret them separately. Keep |β| ≲ 3 at
 n_shells = 12: larger β bends remote basis states into the low-energy window
 (spurious bands — a basis artifact seen when β reached 6). λ's fitted sign is
 opposite to the naive two-center form-factor slope — treat it as an effective
-operator absorbing multi-orbital/overlap non-locality of the DeepH
+operator absorbing multi-orbital/overlap non-locality of the ML
 Hamiltonian.
 
 Fitting protocol (`fit_ph2.py`): stage A′ matches the *sorted* Γ level lists

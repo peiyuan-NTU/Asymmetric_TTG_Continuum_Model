@@ -2,7 +2,7 @@
 
 Exactly-commensurate Bistritzer–MacDonald continuum model for **asymmetric
 twisted trilayer graphene** (θ₁₂ ≠ θ₂₃), built for and validated against
-large-scale rigid-structure tight-binding band structures (DeepH-predicted
+large-scale rigid-structure tight-binding band structures (ML-predicted
 Hamiltonians, OpenMX `.Band` format) of generator-built commensurate
 supercells.
 
@@ -35,7 +35,7 @@ three channels per interface whose absolute-momentum transfers are the direct
 term plus two integer-supercell umklapps — supercell Bloch momentum is
 conserved exactly. Optional operators: per-layer on-site `V_layer`
 (middle-layer chemical shift V₂ ≈ −50 meV, matching the pz on-site measured
-directly in the DeepH LCAO Hamiltonian), particle-hole `beta_ph·|k−K_l|²·𝟙`
+directly in the ML LCAO Hamiltonian), particle-hole `beta_ph·|k−K_l|²·𝟙`
 (graphene NNN image), and non-local interlayer tunneling
 `lam_nl` (t → w(1+λ·d̂_s·k̃), the dominant shoulders-vs-apex actuator).
 

@@ -1,5 +1,5 @@
 """Compare the exactly-commensurate RigidTTG continuum model against the
-rigid-structure TB bands (DeepH-predicted Hamiltonian, GPU-Lanczos, OpenMX
+rigid-structure TB bands (ML-predicted Hamiltonian, GPU-Lanczos, OpenMX
 .Band format) from rack:~/ttg_organized.
 
 Usage:
@@ -151,7 +151,7 @@ def run(tag, pairing="derived", mirror=False, w=0.11, vfc=0.80, offset="auto",
         fig, ax = plt.subplots(figsize=(7, 5.5))
         for ik in range(len(x)):
             ax.plot([x[ik]] * len(E_tb[ik]), E_tb[ik], ".", color="k", ms=2.5,
-                    label="TB (DeepH rigid)" if ik == 0 else None)
+                    label="TB (ML rigid)" if ik == 0 else None)
             em = Eu[ik] + off
             ax.plot([x[ik]] * len(em), em, ".", color="crimson", ms=1.5, alpha=0.7,
                     label=f"continuum (w={w}, vfc={vfc})" if ik == 0 else None)

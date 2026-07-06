@@ -1,4 +1,4 @@
-"""Three-way comparison: continuum model vs DeepH-ML vs true DFT.
+"""Three-way comparison: continuum model vs ML vs true DFT.
 
 The only two configs with a DFT band are TTG_2_7 (full diagonalization, 13286
 bands) and TTG_2_12 (100 bands near E_F, DFT Hamiltonian). Both are the large-
@@ -110,7 +110,7 @@ def main():
                     label="DFT (truth)" if ik == 0 else None)
             em = E_ml_a[ik]; em = em[(em >= lo) & (em <= hi)]
             ax.plot([ik] * len(em), em, ".", c="tab:blue", ms=4,
-                    label="DeepH-ML" if ik == 0 else None)
+                    label="ML" if ik == 0 else None)
             ec = E_cont_a[ik]; ec = ec[(ec >= lo) & (ec <= hi)]
             ax.plot([ik] * len(ec), ec, ".", c="crimson", ms=3, alpha=0.8,
                     label="continuum" if ik == 0 else None)
