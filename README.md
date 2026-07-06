@@ -88,33 +88,37 @@ repo-relative. Requires numpy, scipy, matplotlib.
 tests. V₂ is transferable: −49 ± 7 meV across configs vs −59 ± 2 meV measured
 in the LCAO Hamiltonian. (β, λ) share a soft degeneracy — quote the pair.)
 
-## Zero-shot predictions (blind test, 2026-07-04)
+## Zero-shot predictions (blind test)
 
-Three configs computed *after* the model was frozen (`scripts/predict.py`,
-frozen family-median parameters, only the energy offset optimized). TTG_3_45
-and TTG_4_45 are new twist angles AND a new folding class (m ≡ 1 mod 3: cones
-at K, K′, K — no Γ cones; the two outer-layer cones fold to the same K point
-and split by an L2-mediated effective coupling, a ~20 meV gap):
+Seven configurations computed *after* the model was frozen
+(`scripts/predict.py`, frozen family-median parameters, only the energy offset
+optimized). Spans twist $2.3^\circ$–$13.2^\circ$, tiling $m=3$–$19$
+(dim 3400–37000, reduced by the large-angle fast convergence), and both
+folding classes (Γ: cones fold to Γ; K/K′/K: $m\!\equiv\!1\bmod 3$, the two
+outer cones fold to the same supercell K and split by an L2-mediated gap):
 
-| config | θ₁₂/θ₂₃ | folding | tier A (plain BM) | tier B (full) | TB K-gap → A / B |
+| config | θ₁₂/θ₂₃ | folding | m | tier A (plain BM) | tier B (full) |
 |---|---|---|---|---|---|
-| TTG_14_43 | 1.52°/2.28° | Γ class | 2.02 | **0.67** | gapless ✓ / ✓ |
-| TTG_4_45 | 4.03°/7.34° | K/K′ class | **2.02** | 3.40 | 23.5 → 24.6 ✓ / 0.4 ✗ |
-| TTG_3_45 | 5.08°/9.43° | K/K′ class | 4.31 | **2.21** | 20.0 → 36.7 / 11.7 |
+| TTG_14_43 | 1.52°/2.28° | Γ | 3 | 2.02 | **0.67** |
+| TTG_11_34 | 1.92°/2.88° | Γ | 3 | 2.85 | **1.22** |
+| TTG_4_45 | 4.03°/7.34° | K/K′/K | 10 | **2.02** | 3.40 |
+| TTG_3_45 | 5.08°/9.43° | K/K′/K | 13 | 4.31 | **2.21** |
+| TTG_3_6 | 7.26°/9.43° | K/K′/K | 13 | 4.47 | **2.85** |
+| TTG_2_45 | 6.95°/13.17° | Γ | 18 | 6.01 | **3.60** |
+| TTG_2_47 | 6.93°/13.17° | K/K′/K | 19 | 4.77 | **3.57** |
 
-Take-aways: (i) zero-shot accuracy 0.7–4.3 meV across 1.5°–9.4° and across
-folding classes — plain BM even nails the 23.5 meV K-gap of 4_45 blind;
-(ii) the universal (V₂, β, λ) values calibrated on the Γ-class fine structure
-do NOT transfer reliably to the K/K′-class gap (tier B collapses it at 7.3°,
-halves it at 9.4°) — the new folding class breaks the (β, λ) soft degeneracy
-and provides the orthogonal constraint needed to pin them individually
-(joint refit = natural next step); (iii) both tiers independently find a
-CNP-vs-dataset-E_F offset of ≈ −28 meV for the x_45 family (real feature of
-the TB data, not a model artifact); (iv) TTG_14_43's re-run with the new GPU
-Lanczos v9 solver reproduces the old pipeline eigenvalue-for-eigenvalue
-(< 0.1 µeV), and the model predicts it at 0.67 meV with frozen parameters —
-better than its own per-config fit, i.e. nothing was lost by universalizing
-the parameters in the small-angle family.
+Take-aways: (i) zero-shot accuracy **0.7–3.6 meV** (full) / 2–6 meV (plain BM)
+across all angles, tilings, and folding classes — nothing was fit to these.
+(ii) TTG_11_34 (Γ class, in-family angle) predicts to 1.2 meV, confirming the
+frozen parameters transfer perfectly within the family. (iii) The K/K′/K-class
+$K$-gap is the sensitive probe of $(\beta,\lambda)$: the frozen values match it
+at 13° (2_47: TB 10.7 → model 10.5 meV) but miss at 7–9° (4_45, 3_45), because
+$\beta$ and $\lambda$ share a soft degeneracy only broken by fitting across
+folding classes — a joint refit including these configs would pin them.
+(iv) The x_4x family carries a real CNP-vs-dataset-E_F offset ≈ −30 meV (all
+tiers agree). (v) TTG_14_43's GPU-Lanczos-v9 rerun matches the old pipeline to
+< 0.1 µeV and is predicted at 0.67 meV frozen — better than its own per-config
+fit, i.e. universalizing the small-angle parameters lost nothing.
 
 ## Relation to earlier work
 
