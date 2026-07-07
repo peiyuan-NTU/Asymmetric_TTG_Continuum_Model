@@ -119,18 +119,26 @@ def main():
         fig.savefig(RESULTS / f"{a.tag}_pred_{tier}.png", dpi=160)
         print(f"saved {RESULTS / (a.tag + '_pred_' + tier + '.png')}", flush=True)
 
+    def save_npz(tier, kf, E_tb, Eu, off):
+        np.savez(RESULTS / f"{a.tag}_pred_{tier}.npz", kfrac=kf,
+                 E_tb=np.array(E_tb, dtype=object),
+                 E_model=np.array(Eu, dtype=object), offset=off,
+                 allow_pickle=True)
+
     tiers = {}
     if "B" in a.tiers:
         tiers["B"], kf, E_tb, Eu, off, win = predict(mdl, band, TIER_B,
                                                      a.stride, label="tierB")
         print(f"[{a.tag}] tier B: {tiers['B']['chamfer_meV']:.2f} meV "
               f"(off {tiers['B']['offset_meV']:+.1f})", flush=True)
+        save_npz("B", kf, E_tb, Eu, off)
         overlay("B", kf, E_tb, Eu, off, win, tiers["B"]["chamfer_meV"])
     if "A" in a.tiers:
         sA = a.stride * (2 if mdl.N > 6000 and "B" in a.tiers else 1)
         tiers["A"], kf, E_tb, Eu, off, win = predict(mdl, band, TIER_A, sA,
                                                      label="tierA")
         print(f"[{a.tag}] tier A: {tiers['A']['chamfer_meV']:.2f} meV", flush=True)
+        save_npz("A", kf, E_tb, Eu, off)
         overlay("A", kf, E_tb, Eu, off, win, tiers["A"]["chamfer_meV"])
     out["tiers"] = tiers
     (RESULTS / f"{a.tag}_pred.json").write_text(json.dumps(out, indent=1))
