@@ -103,7 +103,7 @@ def main():
                  kfrac=kf, E_dft=np.array(E_dft, dtype=object),
                  E_ml=np.array(E_ml_a, dtype=object),
                  E_cont=np.array(E_cont_a, dtype=object),
-                 off_cont=off_c, off_ml=off_m, allow_pickle=True)
+                 off_cont=off_c, off_ml=off_m)
         kc = np.arange(len(kf))
         for ik in range(len(kf)):
             ax.plot([ik] * len(E_dft[ik]), E_dft[ik], "_", c="k", ms=6, mew=1.6,

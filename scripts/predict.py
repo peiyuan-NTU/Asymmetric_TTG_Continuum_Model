@@ -122,8 +122,7 @@ def main():
     def save_npz(tier, kf, E_tb, Eu, off):
         np.savez(RESULTS / f"{a.tag}_pred_{tier}.npz", kfrac=kf,
                  E_tb=np.array(E_tb, dtype=object),
-                 E_model=np.array(Eu, dtype=object), offset=off,
-                 allow_pickle=True)
+                 E_model=np.array(Eu, dtype=object), offset=off)
 
     tiers = {}
     if "B" in a.tiers:

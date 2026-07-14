@@ -82,15 +82,32 @@ def K_of(G):
     return (2.0 * G[:, 0] + G[:, 1]) / 3.0
 
 
-def best_mn(i, j, mmax=10):
-    """Smallest-strain tiling (m, n) with m*f(i) ~ n*f(j); smallest cell on ties."""
+def best_mn(i, j, mmax=64, tol=0.01):
+    """Smallest retained cell with mismatch <= ``tol``.
+
+    The structure generator first applies the mismatch gate and then minimizes
+    the exact trilayer atom count, rather than minimizing mismatch alone.  The
+    default search range covers every tiling in the 94-structure catalogue.
+    """
     best = None
+    ni = 3 * i * i + 3 * i + 1
+    nj = 3 * j * j + 3 * j + 1
     for m in range(1, mmax + 1):
         for n in range(1, mmax + 1):
             r = abs(m * f_com(i) / (n * f_com(j)) - 1.0)
-            if best is None or r < best[2] - 1e-12:
-                best = (m, n, r)
-    return best
+            if r > tol + 1e-12:
+                continue
+            n_atoms = 4 * ni * m * m + 2 * nj * n * n
+            candidate = (n_atoms, r, m, n)
+            if best is None or candidate < best:
+                best = candidate
+    if best is None:
+        raise ValueError(
+            f"No tiling for TTG_{i}_{j} has mismatch <= {tol:.3%} "
+            f"within m,n <= {mmax}; pass m,n explicitly or enlarge mmax."
+        )
+    _, r, m, n = best
+    return m, n, r
 
 
 def int_matrix(M, tol=1e-9, what="matrix"):
@@ -336,13 +353,15 @@ class RigidTTG:
         return np.sort(e.real)
 
     def bands(self, k_list, w_aa, w_ab, vfc, num_eigs=60, sigma=1e-4,
-              V_layer=None, beta_ph=0.0, verbose=False):
+              V_layer=None, beta_ph=0.0, lam_nl=0.0, verbose=False):
         """k_list: (nk, 2) cartesian supercell Bloch momenta (1/A)."""
         k_list = np.asarray(k_list, float)
         vals = np.zeros((len(k_list), num_eigs))
         for ik, k in enumerate(k_list):
-            vals[ik] = self.eigs_at(k, w_aa, w_ab, vfc, num_eigs, sigma, V_layer,
-                                    beta_ph)
+            vals[ik] = self.eigs_at(
+                k, w_aa, w_ab, vfc, num_eigs, sigma, V_layer,
+                beta_ph, lam_nl,
+            )
             if verbose and ik % 10 == 0:
                 print(f"  k {ik}/{len(k_list)}  ndof={self.N}", flush=True)
         return vals

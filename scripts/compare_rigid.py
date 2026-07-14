@@ -140,8 +140,7 @@ def run(tag, pairing="derived", mirror=False, w=0.11, vfc=0.80, offset="auto",
     outdir = ROOT / "results"
     outdir.mkdir(exist_ok=True)
     np.savez(outdir / f"{out}.npz", kfrac=kf, E_tb=np.array(E_tb, dtype=object),
-             E_model=np.array(Eu, dtype=object), offset=off,
-             allow_pickle=True)
+             E_model=np.array(Eu, dtype=object), offset=off)
 
     if plot:
         import matplotlib
