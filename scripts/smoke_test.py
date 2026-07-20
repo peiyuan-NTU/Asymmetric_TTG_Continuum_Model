@@ -24,6 +24,10 @@ for (i, j) in [(8, 25), (2, 7), (2, 12), (10, 31), (14, 43)]:
     t0 = time.time()
     mdl = RigidTTG(i, j, n_shells=12)
     dt = time.time() - t0
+    alpha_deg = np.degrees(mdl.alphas)
+    assert np.isclose(abs(alpha_deg[1] - alpha_deg[0]), mdl.theta12_deg, atol=1e-12)
+    assert np.isclose(abs(alpha_deg[2] - alpha_deg[1]), mdl.theta23_deg, atol=1e-12)
+    assert np.isclose(abs(alpha_deg[2] - alpha_deg[0]), mdl.theta13_deg, atol=1e-12)
     print(mdl.summary())
     da = mdl.A_shared - POSCAR_A[(i, j)]
     print(f"  A_shared vs rack POSCAR: {da:+.3e} A {'OK' if abs(da) < 1e-6 else 'MISMATCH!'}")

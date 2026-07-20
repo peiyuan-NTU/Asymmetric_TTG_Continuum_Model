@@ -32,7 +32,10 @@ For `TTG_i_j` with tiling (m, n), `f(k) = √(3k²+3k+1)`, `L(k) = a0·f(k)`,
 | L3 (z=6.7 Å) | TBG_i top | `+θ_i/2 − 30°` | `s23` |
 
 Interface twists: **θ12 = (θ_i+θ_j)/2** (not θ_j — see "errata" below),
-θ23 = θ_i. The −30° common offset comes from transplanting fractional
+θ23 = θ_i, and the outer-layer magnitude is **θ13 = |θ_i−θ_j|/2**. Thus θ_j
+is a construction-index angle rather than a realized pair twist. With signed
+twist defined as upper minus lower orientation, `(ϑ12,ϑ23)=(-θ12,+θ23)`, so
+the legacy structures are alternating rather than helical. The −30° common offset comes from transplanting fractional
 coordinates from the TBG supercell (whose a1 sits at 30°+θ/2 from the graphene
 a1) into the standard hex cell. Verified: analytic `a_shared(2,7) =
 (3√19+13)/2·2.47 = 32.2047206 Å` = rack POSCAR to all digits; per-layer bond
@@ -176,6 +179,10 @@ For any generated TTG_i_j (both twists ≲ 5°): `RigidTTG(i, j)` with
 
 ## Errata for the older work in ttg_fit/
 
+* The old GPU `tag_theta_list=[−θ12,0,+θ23]` has the correct angle magnitudes but
+  the wrong chirality. From the analytic generator orientations, removing the
+  common rotation gives `[+θ12,0,+θ23]`, hence signed adjacent twists
+  `(−θ12,+θ23)` (alternating). `RigidTTG.alphas` implements this directly.
 * `RESULT_TTG_8_25.md` used θ12 = θ(25) = 1.297°; the actual generator gives
   θ12 = (θ(8)+θ(25))/2 = 2.594°. The folding topology it found (L0→K, L1/L2→Γ)
   was right, but the interface-12 coupling scale |q12| was ~½ the true value,

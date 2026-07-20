@@ -15,6 +15,11 @@ NOT fitted and NOT extracted from atomic positions:
       layer 1 (TBG_j top):    alpha1 = +theta_j/2 - 30deg,  s1  = A/(n*a0*f(j))
       layer 2 (TBG_i bottom): alpha2 = -theta_i/2 - 30deg,  s23 = A/(m*a0*f(i))
       layer 3 (TBG_i top):    alpha3 = +theta_i/2 - 30deg,  s23
+  therefore the realized pair-angle magnitudes are
+      theta12 = (theta_i + theta_j)/2,
+      theta23 = theta_i,
+      theta13 = abs(theta_i - theta_j)/2.
+  In particular, theta_j is a construction-index angle, not theta13 itself.
   (the -30deg: the TBG supercell vector sits at 30+theta/2 from the graphene a1
    axis; transplanting fractional coords into the standard hex cell rotates each
    TBG by -(30+theta/2).)
@@ -139,6 +144,7 @@ class RigidTTG:
         fi, fj = f_com(i), f_com(j)
         self.theta12_deg = np.degrees(0.5 * (ti + tj))
         self.theta23_deg = np.degrees(ti)
+        self.theta13_deg = np.degrees(0.5 * abs(ti - tj))
         self.A_shared = 0.5 * (m * A0 * fi + n * A0 * fj)
         s1 = self.A_shared / (n * A0 * fj)
         s23 = self.A_shared / (m * A0 * fi)
@@ -373,7 +379,8 @@ class RigidTTG:
     def summary(self):
         s = [f"TTG_{self.i}_{self.j}: m={self.m} n={self.n}  "
              f"A={self.A_shared:.6f} A  ndof={self.N} (dim {2*self.N})",
-             f"  theta12={self.theta12_deg:.4f} deg  theta23={self.theta23_deg:.4f} deg",
+             f"  theta12={self.theta12_deg:.4f} deg  theta23={self.theta23_deg:.4f} deg  "
+             f"theta13={self.theta13_deg:.4f} deg",
              f"  strain eps1={self.scales[0]-1:+.5%}  eps23={self.scales[1]-1:+.5%}",
              f"  alphas(deg)={np.degrees(self.alphas).round(4).tolist()}",
              f"  folded cones (units b/3, mod 3): {self.folded}",
