@@ -59,7 +59,27 @@ def parse_openmx_band(path):
 
 def chamfer(A, B):
     """Mean over points in A of distance to nearest point in B (1D energies,
-    per k-point). A, B: lists of arrays per k."""
+    per k-point). A, B: lists of arrays per k.
+
+    WEIGHTING CAVEAT. All per-k distances are concatenated into a SINGLE global
+    mean, so every (band, k) pair carries equal weight -- not every k-point.
+    Where the band density is uniform along the path (33-42 bands/k for most
+    configs here) this is immaterial: k-point-weighted and band-weighted
+    evaluations agree to <0.1 meV. It matters badly when the density varies:
+    TTG_2_7 carries ~2 bands in the window over most of the path but 8 near
+    Gamma, so the crowded Gamma k-points dominate and this metric rated a fit
+    as improved (12.70 -> 8.26 meV) whose Dirac-cone branches visibly degraded
+    over the rest of the path (k-point-weighted: 10.63 -> 15.24 meV).
+
+    For sparse or non-uniform band densities, cross-check with the k-point
+    weighting, i.e. average 0.5*(mean_a min_b + mean_b min_a) per k first:
+        np.mean([0.5*(np.abs(a[:,None]-b[None,:]).min(1).mean()
+                    + np.abs(b[:,None]-a[None,:]).min(1).mean())
+                 for a, b in zip(A, B) if len(a) and len(b)])
+    Related pitfall: being assignment-free, Chamfer also tolerates a splitting
+    reproduced only halfway (see fit_ph2.stageA, which uses sorted-level
+    matching instead for exactly this reason).
+    """
     d = []
     for a, b in zip(A, B):
         if len(a) == 0 or len(b) == 0:
